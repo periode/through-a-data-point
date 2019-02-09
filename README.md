@@ -32,7 +32,7 @@ In order to set up the raspberry pi, you will need to **install** it, **find** i
 4. Open Etcher, select the image you just downloaded and the SD card you just inserted, and flash.
 5. Insert the microSD card in the raspberry pi and connect it to a power source. A microUSB plugged in to a laptop is enough.
 6. Once the raspberry pi is powered up, you should see a solid blinking LED.
-7. On your computer, open the Command Prompt and type `ping raspberrypi`. The [output](http://j.tlns.be/wp-content/uploads/2015/02/step2_ping.png) should give you the IP address of the raspberry pi.
+7. On your computer, open the Command Prompt and type `ping raspberrypi`. The [output](http://j.tlns.be/wp-content/uploads/2015/02/step2_ping.png) should give you the IP address of the raspberry pi. **Make sure you are on the same WiFi network as the raspberry Pi**.
 8. Download [Putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) (you probably want the 64bit MSI version).
 9. Enter the IP address of the raspberry pi in the `Host Name (or IP address)` field, with `Port` set to 22 and click `Open`.
 10. A command prompt should open. When asked to login as, enter `pi` and for password enter `raspberry`.
