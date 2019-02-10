@@ -26,7 +26,7 @@ Things to take into consideration:
 
 In order to set up the raspberry pi, you will need to **install** it, **find** it, **connect** to it and **execute** the sample program.
 
-1. Download the [disk image]() that we will flash on the SD card.
+1. Download the [disk image](https://drive.google.com/open?id=1BWNo9bP_HmcmEQR-66aUi-tPA5VI7Kre) that we will flash on the SD card.
 2. Download [Etcher](https://www.balena.io/etcher/).
 3. Insert the SD card in your computer.
 4. Open Etcher, select the image you just downloaded and the SD card you just inserted, and flash.
