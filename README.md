@@ -21,6 +21,10 @@ Things to take into consideration:
 - The power source is represented as 2x AA Batteries. It should instead be the 12V power supply, connected to the [power connector](https://ftaelectronics.com/image/cache/catalog/RG6%20Cable%20and%20Connectors/Cat6%20Connectors/2Pcs%20CCTV%20Camera%20UTP%20Power%20DC%20Plug%202.1mm%205.5mm%20Female%20Power%20Connectors-1024x768_0.jpg).
 - The wires coming out of the stepper motor are black and red. For clarity, I've connected them to wires that are the same as their actual color (red, green, yellow, blue).
   - This means that red and yellow go on one side of the IC, while green and blue should go on the other side.
+  
+ #### Tip
+ 
+ Here's a shortcut to finding wire pairs for a bipolar (4 wire) motor. Spin your stepper motor with your fingers. Depending on the size / holding torque this could be easy or pretty hard. All you really want from this is to get a feel how the motor spins without any of the wires connected to each other. Now that you know how hard it is to spin with your fingers, connect 2 wires together, any two. Try to spin the motor again. If it feels the same then these are **NOT** connected to the same coil. Disconnect these wires. Connect one of the other wires to one of the first wire pairs you tried. Try to spin the motors again. This should be **much** harder. If so, you have found your wire pairs. Each pair goes on one side of the L293D.
 
 ## Programming
 
