@@ -36,7 +36,15 @@ In order to set up the raspberry pi, you will need to **install** it, **find** i
 4. Open Etcher, select the image you just downloaded and the SD card you just inserted, and flash.
 5. Insert the microSD card in the raspberry pi and connect it to a power source. A microUSB plugged in to a laptop is enough.
 6. Once the raspberry pi is powered up, you should see a solid blinking LED.
+
+
+### How to find your IP Address.
 7. On your computer, open the Command Prompt and type `ping raspberrypi`. The [output](http://j.tlns.be/wp-content/uploads/2015/02/step2_ping.png) should give you the IP address of the raspberry pi. **Make sure you are on the same WiFi network as the raspberry Pi**.
+7a. Install [Fing](https://play.google.com/store/apps/details?id=com.overlook.android.fing) and scan your wifi network to find connected devices.
+7b. Insert the SD Card into your computer. A `boot` disk should appear. Inside the boot partition, create a file called `wpa_supplicant.conf`, this is the file which connects automatically to WiFi networks. The file contents should look like [this](https://github.com/periode/through-a-data-point/blob/master/code/wpa_supplicant.conf) (make sure it's the correct ssid/pw for your own wifi!).
+7c. Plug in the raspberry pi directly to your router. Then open the command prompt and type `arp -a`. Your raspberry pi is the device that starts with the MAC address `b8:27:eb`.
+
+
 8. Download [Putty](https://www.chiark.greenend.org.uk/~sgtatham/putty/latest.html) (you probably want the 64bit MSI version).
 9. Enter the IP address of the raspberry pi in the `Host Name (or IP address)` field, with `Port` set to 22 and click `Open`.
 10. A command prompt should open. When asked to login as, enter `pi` and for password enter `raspberry`.
