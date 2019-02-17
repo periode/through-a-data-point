@@ -9,95 +9,160 @@ import time
 
 GPIO.setmode(GPIO.BCM)
 ## 1
-# data green 23
-# clock blue 18
-# latch orange 24
+CLOCK_1 = 18 #green
+DATA_1 = 23 #blue
+LATCH_1 = 24 #orange
 
-CLOCK_1 = 18
-DATA_1 = 23
-LATCH_1 = 24
+CLOCK_2 = 6 #orange
+DATA_2 = 25 #purple
+LATCH_2 = 12 #yellow
 
-## 2
-# clock orange 6
-# data purple 25
-# latch yellow 32
+CLOCK_3 = 26 #white
+DATA_3 = 16 #grey
+LATCH_3 = 20 #white
 
-CLOCK_2 = 6
-DATA_2 = 25
-LATCH_2 = 12
+forward_first = [
+    10, # 1010,
+    6,  # 0110,
+    5,  # 0101,
+    9   # 1001
+]
+forward_second = [160, 96, 80, 144]
 
-## 3
-# clock white 6
-# data grey 16
-# latch white 20
-CLOCK_3 = 26
-DATA_3 = 16
-LATCH_3 = 20
+backward_first = [
+    9, # 1001,
+    5, # 0101,
+    6, # 0110,
+    10 # 1010
+]
+backward_second = [144, 80, 96, 160]
 
-#PROBLEM when one motor is going in a group, it overwrites the current direction of the neighboring motor
+class Motor:
+    def __init__(self, _id, _neighbour, _clock, _latch, _data, _position, _direction):
+        self.id = _id
+        self.clock = _clock
+        self.latch = _latch
+        self.data = _data
+        self.neighbour = _neighbour
+        self.first = (_id == "A" || _id == "C" || _id == "E") ? True : False
+        if(self.first):
+            self.fwd = [10, 6, 5, 9]
+            self.bwd = [9, 5, 6, 10]
+        else:
+            self.fwd = [160, 96, 80, 144]
+            self.bwd = [144, 80, 96, 160]
 
-motors = {
-        "A": {
-            "NEIGHBOUR": "B",
-            "CLOCK": CLOCK_1, 
-            "LATCH": LATCH_1, 
-            "DATA": DATA_1,
-            "DOWN": 3,
-            "UP": 12,
-            "STILL": 0,
-            "CURRENT": "STILL"
-            },
-        "B": {
-            "NEIGHBOUR": "A",
-            "CLOCK": CLOCK_1, 
-            "LATCH": LATCH_1, 
-            "DATA": DATA_1,
-            "DOWN": 48,
-            "UP": 192,
-            "STILL": 0,
-            "CURRENT": "STILL"
-            },
-        "C": {
-            "NEIGHBOUR": "D",
-            "CLOCK": CLOCK_2, 
-            "LATCH": LATCH_2, 
-            "DATA": DATA_2,
-            "DOWN": 3,
-            "UP": 12,
-            "STILL": 0,
-            "CURRENT": "STILL"
-            },
-        "D": {
-            "NEIGHBOUR": "C",
-            "CLOCK": CLOCK_2, 
-            "LATCH": LATCH_2, 
-            "DATA": DATA_2,
-            "DOWN": 48,
-            "UP": 192,
-            "STILL": 0,
-            "CURRENT": "STILL"
-            },
-        "E": {
-            "NEIGHBOUR": "F",
-            "CLOCK": CLOCK_3, 
-            "LATCH": LATCH_3, 
-            "DATA": DATA_3,
-            "DOWN": 3,
-            "UP": 12,
-            "STILL": 0,
-            "CURRENT": "STILL"
-            },
-        "F": {
-            "NEIGHBOUR": "E",
-            "CLOCK": CLOCK_3, 
-            "LATCH": LATCH_3, 
-            "DATA": DATA_3,
-            "DOWN": 48,
-            "UP": 192,
-            "STILL": 0,
-            "CURRENT": "STILL"
-            }
-        }
+    def clock():
+        GPIO.output(self.clock, 1)
+        time.sleep(.01)
+        GPIO.output(self.clock, 0)
+
+    def latch():
+        GPIO.output(self.latch, 1)
+        time.sleep(.01)
+        GPIO.output(self.latch, 0)
+
+    def writePin(value):
+        for x in range(0, 8):
+            temp = value & 0x80
+            if temp == 0x80:
+                GPIO.output(self.data, 1)
+            else:
+                GPIO.output(self.data, 0)
+            clock()
+            value = value << 0x01
+        latch()
+
+    def up(delay, steps):
+        for i in range(0, steps):
+            writePin(self.fwd[0])
+            time.sleep(delay)
+            writePin(self.fwd[1])
+            time.sleep(delay)
+            writePin(self.fwd[2])
+            time.sleep(delay)
+            writePin(self.fwd[3])
+
+    def down(delay, steps):
+        for i in range(0, steps):
+            writePin(self.bwd[0])
+            time.sleep(delay)
+            writePin(self.bwd[1])
+            time.sleep(delay)
+            writePin(self.bwd[2])
+            time.sleep(delay)
+            writePin(self.bwd[3])
+
+    def reset():
+        for state in [0, 0, 0, 0]:
+            writePin(state)
+
+motors = []
+
+
+
+# motors = {
+#         "A": {
+#             "NEIGHBOUR": "B",
+#             "CLOCK": CLOCK_1,
+#             "LATCH": LATCH_1,
+#             "DATA": DATA_1,
+#             "DOWN": 3,
+#             "UP": 12,
+#             "STILL": 0,
+#             "CURRENT": "STILL"
+#             },
+#         "B": {
+#             "NEIGHBOUR": "A",
+#             "CLOCK": CLOCK_1,
+#             "LATCH": LATCH_1,
+#             "DATA": DATA_1,
+#             "DOWN": 48,
+#             "UP": 192,
+#             "STILL": 0,
+#             "CURRENT": "STILL"
+#             },
+#         "C": {
+#             "NEIGHBOUR": "D",
+#             "CLOCK": CLOCK_2,
+#             "LATCH": LATCH_2,
+#             "DATA": DATA_2,
+#             "DOWN": 3,
+#             "UP": 12,
+#             "STILL": 0,
+#             "CURRENT": "STILL"
+#             },
+#         "D": {
+#             "NEIGHBOUR": "C",
+#             "CLOCK": CLOCK_2,
+#             "LATCH": LATCH_2,
+#             "DATA": DATA_2,
+#             "DOWN": 48,
+#             "UP": 192,
+#             "STILL": 0,
+#             "CURRENT": "STILL"
+#             },
+#         "E": {
+#             "NEIGHBOUR": "F",
+#             "CLOCK": CLOCK_3,
+#             "LATCH": LATCH_3,
+#             "DATA": DATA_3,
+#             "DOWN": 3,
+#             "UP": 12,
+#             "STILL": 0,
+#             "CURRENT": "STILL"
+#             },
+#         "F": {
+#             "NEIGHBOUR": "E",
+#             "CLOCK": CLOCK_3,
+#             "LATCH": LATCH_3,
+#             "DATA": DATA_3,
+#             "DOWN": 48,
+#             "UP": 192,
+#             "STILL": 0,
+#             "CURRENT": "STILL"
+#             }
+# }
 
 GPIO.setup(CLOCK_1, GPIO.OUT)
 GPIO.setup(DATA_1, GPIO.OUT)
@@ -178,5 +243,3 @@ def main():
     sys.exit(0)
 
 main()
-
-
