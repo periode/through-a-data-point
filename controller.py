@@ -2,6 +2,7 @@ import sys
 import RPi.GPIO as GPIO
 import time
 import threading
+from subprocess import Popen
 
 # NOTES
 
@@ -101,14 +102,16 @@ GPIO.setup(MOTOR_D_B, GPIO.OUT)
 GPIO.setup(MOTOR_D_C, GPIO.OUT)
 GPIO.setup(MOTOR_D_D, GPIO.OUT)
 
+
 def main():
     try:
         for motor in motors:
             motor.reset()
 
+        Popen(['/usr/bin/omxplayer', 'legal_1-0.mp4'])        
         motors[0].move("up", 0.075, 40)
-        motors[1].move("up", 0.025, 40)
-        motors[2].move("up", 0.055, 40)
+        motors[1].move("down", 0.025, 40)
+        motors[2].move("down", 0.055, 40)
         motors[3].move("up", 0.085, 40)
 
         for t in threading.enumerate():
