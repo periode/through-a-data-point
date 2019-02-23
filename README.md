@@ -1,6 +1,11 @@
 # through-a-data-point
 Code + doc for Data Through Design 2019
 
+## TODO
+- make sure you have the RPI screen as minimal as possible, following [this](https://scribles.net/customizing-boot-up-screen-on-raspberry-pi/)
+- download the latest video by running `wget http://enframed.net/deeds/test.mp4`
+
+
 ## HARDWARE
 
 - 4x [Stepper Motor](https://www.sparkfun.com/products/10848)
