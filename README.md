@@ -3,15 +3,17 @@ Code + doc for Data Through Design 2019
 
 ## HARDWARE
 
-- 6x [Stepper Motor](https://www.sparkfun.com/products/10848)
-- 6x [L293D Driver IC](https://www.engineersgarage.com/electronic-components/l293d-motor-driver-ic)
-- 3x [74HC595N Shift Register](https://www.sparkfun.com/products/13699)
+- 4x [Stepper Motor](https://www.sparkfun.com/products/10848)
+- 4x [L293D Driver IC](https://www.engineersgarage.com/electronic-components/l293d-motor-driver-ic)
 - 1x [Raspberry Pi Model 3B](https://www.raspberrypi.org/products/raspberry-pi-3-model-b/)
 - 1x Power Supply DC 12V 0.6A
 - 1x [Power Connector](https://ftaelectronics.com/image/cache/catalog/RG6%20Cable%20and%20Connectors/Cat6%20Connectors/2Pcs%20CCTV%20Camera%20UTP%20Power%20DC%20Plug%202.1mm%205.5mm%20Female%20Power%20Connectors-1024x768_0.jpg)
 - 1x MicroSD Card 16GB
 
 ## SETUP
+
+### Making the boot screen of RPI black
+- following [this](https://scribles.net/customizing-boot-up-screen-on-raspberry-pi/)
 
 ### Wiring
 
