@@ -14,6 +14,9 @@ Code + doc for Data Through Design 2019
 
 ## SETUP
 
+### Get the latest code
+- from the pi, run: `wget http://enframed.net/deeds/controller.py`
+
 ### Video
 - following [this](https://scribles.net/customizing-boot-up-screen-on-raspberry-pi/)
 - download the latest video by running `wget http://enframed.net/deeds/legal_landscape.mp4` or `wget http://enframed.net/deeds/legal_portrait.mp4`
