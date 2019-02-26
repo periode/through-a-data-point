@@ -2,12 +2,13 @@ import sys
 import RPi.GPIO as GPIO
 import time
 import threading
+from subprocess import Popen
 
-# NOTES
-# threading time
+# CONSTANTS
+VIDEO_FILE = "legal_landscape.mp4"
 
 GPIO.setmode(GPIO.BCM)
-## 1
+
 MOTOR_A_A = 18
 MOTOR_A_B = 23
 MOTOR_A_C = 24
@@ -43,35 +44,37 @@ class Motor:
 
     def up(self, delay, steps):
         for i in range(0, steps):
-            setStep([1, 0, 1, 0])
+            self.setStep([1, 0, 1, 0])
             time.sleep(delay)
-            setStep([0, 1, 1, 0])
+            self.setStep([0, 1, 1, 0])
             time.sleep(delay)
-            setStep([0, 1, 0, 1])
+            self.setStep([0, 1, 0, 1])
             time.sleep(delay)
-            setStep([1, 0, 0, 1])
+            self.setStep([1, 0, 0, 1])
             time.sleep(delay)
 
 
     def down(self, delay, steps):
         for i in range(0, steps):
-            setStep([1, 0, 0, 1])
+            self.setStep([1, 0, 0, 1])
             time.sleep(delay)
-            setStep([0, 1, 0, 1])
+            self.setStep([0, 1, 0, 1])
             time.sleep(delay)
-            setStep([0, 1, 1, 0])
+            self.setStep([0, 1, 1, 0])
             time.sleep(delay)
-            setStep([1, 0, 1, 0])
+            self.setStep([1, 0, 1, 0])
             time.sleep(delay)
 
-    def move(self, dir, delay, step):
+    def move(self, dir, delay, steps):
         if dir == "up":
-            self.up(delay, steps)
+            t = threading.Thread(target=self.up, args=(delay, steps))
+            t.start()
         else:
-            self.down(delay, steps)
+            t = threading.Thread(target=self.down, args=(delay, steps))
+            t.start()
 
     def reset(self):
-        self.setStep(0, 0, 0, 0)
+        self.setStep([0, 0, 0, 0])
 
 motors = []
 
@@ -100,15 +103,26 @@ GPIO.setup(MOTOR_D_B, GPIO.OUT)
 GPIO.setup(MOTOR_D_C, GPIO.OUT)
 GPIO.setup(MOTOR_D_D, GPIO.OUT)
 
+
 def main():
     try:
         for motor in motors:
             motor.reset()
 
-        motors[0].move("up", 0.175, 40)
-        motors[1].move("up", 0.125, 40)
-        motors[2].move("up", 0.075, 40)
-        motors[3].move("up", 0.225, 40)
+        Popen(['/usr/bin/omxplayer', VIDEO_FILE])
+        motors[0].move("up", 0.075, 40)
+        motors[1].move("down", 0.025, 40)
+        motors[2].move("down", 0.055, 40)
+        motors[3].move("up", 0.085, 40)
+
+        for t in threading.enumerate():
+            try:
+                t.join()
+            except RuntimeError as err:
+                if 'cannot join current thread' in err:
+                    continue
+                else:
+                    raise
 
         GPIO.cleanup()
 
